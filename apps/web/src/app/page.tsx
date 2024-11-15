@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Card } from "@repo/ui/card";
 import { CampaignCard } from "@/components/CampaignCard";
 import { CAMPAIGNS } from "@/fixutres";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function Gradient({
   conic,
@@ -20,75 +22,55 @@ function Gradient({
   );
 }
 
-const LINKS = [
-  {
-    title: "Docs",
-    href: "https://turbo.build/repo/docs",
-    description: "Find in-depth information about Turborepo features and API.",
-  },
-  {
-    title: "Learn",
-    href: "https://turbo.build/repo/docs/handbook",
-    description: "Learn more about monorepos with our handbook.",
-  },
-  {
-    title: "Templates",
-    href: "https://turbo.build/repo/docs/getting-started/from-example",
-    description: "Choose from over 15 examples and deploy with a single click.",
-  },
-  {
-    title: "Deploy",
-    href: "https://vercel.com/new",
-    description:
-      "Instantly deploy your Turborepo to a shareable URL with Vercel.",
-  },
-];
 
 export default function Page(): JSX.Element {
   return (
     <main className="flex flex-col items-center justify-between min-h-screen p-24">
       <div className="z-10 items-center justify-between w-full max-w-5xl font-mono text-sm lg:flex">
-        <h1 className="fixed top-0 left-0 flex justify-center w-full px-4 pt-8 pb-6 border-b bg-gradient-to-b backdrop-blur-2xl border-neutral-800 bg-blue-800 from-inherit lg:static lg:w-auto lg:rounded-xl lg:border text-white">
+        <h1 className="text-xl fixed top-0 left-0 flex justify-center w-full px-4 pt-8 pb-6 border-b bg-gradient-to-b backdrop-blur-2xl
+         border-neutral-800 bg-blue-800 from-inherit lg:static lg:w-auto lg:rounded-xl lg:border text-white">
           🛺 Tuk Tuk To the Moon
         </h1>
+      </div>
 
+      <div className="z-50">
+        <Link href="/editor">
+          <Button className="bg-yellow-300">create</Button>
+        </Link>
 
       </div>
 
       <div className="relative flex place-items-center ">
         <div className="font-sans w-auto pb-16 pt-[48px] md:pb-24 lg:pb-32 md:pt-16 lg:pt-20 flex justify-between gap-8 items-center flex-col relative z-0">
           <div className="z-50 flex items-center justify-center w-full">
-            <div className="absolute min-w-[614px] min-h-[614px]">
+            {/* <div className="absolute min-w-[614px] min-h-[614px]">
               <Image
                 alt="Turborepo"
                 height={614}
                 src="circles.svg"
                 width={614}
               />
-            </div>
+            </div> */}
             <div className="flex flex-col">
               {
                 CAMPAIGNS.map(
-                  ({ title, description }) => (
-                    <CampaignCard className="mb-4" key={title} title={title} description={description} />
+                  ({ title, description, category }) => (
+                    <CampaignCard className="p-1 mb-4" key={title} title={title} description={description} category={category} />
                   ))
               }
             </div>
           </div>
-          <Gradient
-            className="top-[-500px] opacity-[0.15] w-[1000px] h-[1000px]"
-            conic
-          />
+
         </div>
       </div>
+      <div className="stars"></div>
+      <div className="shooting-star"></div>
+      <div className="moon"></div>
 
-      <div className="grid mb-32 text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        {LINKS.map(({ title, href, description }) => (
-          <Card href={href} key={title} title={title}>
-            {description}
-          </Card>
-        ))}
-      </div>
+      {/* <Gradient
+        className="top-[-500px] opacity-[0.25] w-[1000px] h-[1000px]"
+        conic
+      /> */}
     </main>
   );
 }

@@ -6,30 +6,32 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Button } from "./ui/button"
+import { Badge } from "./ui/badge"
 
 
 export const CampaignCard = (
     {
         title,
         description,
+        category,
+        className
     }: any
 ) => {
 
     return (
-        <div>
-            <Card>
-                <CardHeader>
-                    <CardTitle>{title}</CardTitle>
-                    <CardDescription>{description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <p>Card Content</p>
-                </CardContent>
-                {/* <CardFooter>
-                    <p>Card Footer</p>
-                </CardFooter> */}
-            </Card>
-        </div>
+        <Card className={className}>
+            <CardHeader>
+                <CardTitle>🛺{title}</CardTitle>
+                <CardDescription>{description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Badge className="bg-blue-400">{category}</Badge>
+            </CardContent>
+            <CardFooter>
+                <Button>Support</Button>
+            </CardFooter>
+        </Card>
     )
 
 }
