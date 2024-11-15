@@ -1,66 +1,22 @@
-## Foundry
-
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
+## Source
+- forked from https://github.com/resolverworks/durin/tree/main
 
 ### Deploy
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
 
-### Cast
 
-```shell
-$ cast <subcommand>
-```
+#### Registrar
 
-### Help
+- verify
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+
+ <!-- env-cmd -f ../../.env forge script scripts/deploy-registry.s.sol  --broadcast  --rpc-url https://sepolia.base.org  --gas-price 1000 --gas-limit 60000000000000000   --verify
+ -->
+
+ <!-- DEPLOYED_OUTPUT=$(ETHERSCAN_API_KEY=$ETHERSCAN_API_KEY forge create --rpc-url $RPC_URL \
+             --private-key $PRIVATE_KEY \
+	      --verify \
+	      --legacy \
+             $CONTRACT_FILE:$CONTRACT_NAME \
+             --constructor-args $REGISTRY_ADDRESS \
+             --json) -->

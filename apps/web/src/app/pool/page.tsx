@@ -10,6 +10,8 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
+import { Avatar } from '@coinbase/onchainkit/identity';
+
 
 import {
     ReactFlow,
@@ -53,6 +55,9 @@ const Page = () => {
         <div className="h-100vh">
             Pool
 
+            Created By
+            <Avatar address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
+
             <div style={{ height: '70vh', width: '100%' }}>
                 <ReactFlow
                     fitView
@@ -68,6 +73,12 @@ const Page = () => {
                 </ReactFlow>
 
             </div >
+            <div>
+                Display files
+            </div>
+            <div>
+                Upload File here
+            </div>
         </div>
     )
 }
