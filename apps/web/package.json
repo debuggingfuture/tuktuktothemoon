@@ -10,10 +10,16 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "^0.35.5",
+    "@dynamic-labs/ethereum": "^3.6.3",
+    "@dynamic-labs/sdk-react-core": "^3.6.3",
+    "@dynamic-labs/wagmi-connector": "^3.6.3",
     "@radix-ui/react-progress": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
     "@repo/ui": "workspace:*",
+    "@tanstack/react-query": "^5.60.5",
+    "@xyflow/react": "^12.2.1",
     "button": "^1.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -23,7 +29,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "viem": "^2.21.45",
+    "wagmi": "^2.12.32"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.3",
