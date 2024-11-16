@@ -22,6 +22,7 @@
     "@repo/ui": "workspace:*",
     "@tanstack/react-query": "^5.60.5",
     "@xyflow/react": "^12.2.1",
+    "badge": "^1.0.3",
     "button": "^1.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -33,6 +34,7 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
+    "text": "^0.1.0",
     "viem": "^2.21.45",
     "wagmi": "^2.12.32"
   },

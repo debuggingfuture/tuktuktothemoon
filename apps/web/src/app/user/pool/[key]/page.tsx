@@ -35,6 +35,8 @@ import UploadDropzone from '@/components/UploadDropzone';
 import { Gallery } from '@/components/Gallery';
 import { useParams } from 'next/navigation';
 import { CAMPAIGNS } from '@/fixutres';
+import { FollowerBadge } from '@/components/EfpFollowers';
+import { Badge } from '@/components/ui/badge';
 
 const nodeTypes: NodeTypes = {
 
@@ -66,19 +68,29 @@ const Page = () => {
     //     [setEdges]
     // );
 
+    const address = '0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9';
 
     return (
         <div className="h-100vh container">
             <h2 className="text-2xl">Pool</h2>
 
+            <div className="pr-2">
+
+                <div className="flex flex-row">
+                    Pool ENS
+                    <Badge>
+                        tuktuktothemoon.eth
+                    </Badge>
+                </div>
+            </div>
             <div className="flex flex-row p-2">
                 <div className="pr-2">
                     Created By
                 </div>
-                <div className="flex flex-row align-middle text-center items-center">
-                    <Avatar address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
-                    <Address address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
-
+                <div className="flex flex-row align-middle text-center items-center gap-3 ">
+                    <Avatar address={address} />
+                    <Address className="bg-blue-400 text-white rounded-lg" address={address} />
+                    <FollowerBadge address={address} />
                 </div>
             </div>
 
