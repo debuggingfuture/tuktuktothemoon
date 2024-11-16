@@ -143,12 +143,6 @@ const Page = () => {
             <h2 className="text-2xl">Pool: {title}</h2>
 
             <div className="pr-2">
-                {
-                    isLoading ? (
-                        'loading...'
-                    ) : data?.length
-                }
-
                 <div className="flex flex-row">
                     ENS
                     <Badge>

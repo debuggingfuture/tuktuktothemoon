@@ -34,8 +34,8 @@ export default function Page(): JSX.Element {
       </div>
 
       <div className="z-50">
-        <Link href="/editor">
-          <Button className="bg-yellow-300 text-blue-300">Create Tuk Tuk</Button>
+        <Link href="/user/editor">
+          <Button className="bg-yellow-300 text-blue-700 font-semibold text-2xl">Create Tuk Tuk</Button>
         </Link>
 
       </div>
@@ -54,8 +54,8 @@ export default function Page(): JSX.Element {
             <div className="flex flex-col">
               {
                 POOLS.map(
-                  ({ key, title, description, category }) => (
-                    <PoolCard className="p-1 mb-4" key={key} title={title} description={description} category={category} />
+                  ({ key: poolKey, title, description, category }) => (
+                    <PoolCard className="p-1 mb-4" key={poolKey} poolKey={poolKey} title={title} description={description} category={category} />
                   ))
               }
             </div>

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 
 
 export const useCreateBucket = (bucketName: string) => {
@@ -59,15 +60,19 @@ const Page = () => {
     }
 
     return (
-        <div className="h-100vh">
+        <div className="h-100vh container p-40">
 
-            <Input placeholder="name"
-                className="text-black"
-                value={name}
-                onChange={(e) => {
-                    setName(e.target.value);
-                }}
-            />
+            <Label>Pool Name</Label>
+            <div className="m-4">
+                <Input placeholder="name"
+                    className="text-black"
+                    value={name}
+                    onChange={(e) => {
+                        setName(e.target.value);
+                    }}
+                />
+            </div>
+
 
             <h1>
                 Enter Pool Details

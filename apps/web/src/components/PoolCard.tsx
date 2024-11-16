@@ -12,7 +12,7 @@ import { Badge } from "./ui/badge"
 
 export const PoolCard = (
     {
-        key,
+        poolKey,
         title,
         description,
         category,
@@ -30,7 +30,7 @@ export const PoolCard = (
                 <Badge className="bg-blue-400">{category}</Badge>
             </CardContent>
             <CardFooter>
-                <a href={`/user/pool/${key}`}>
+                <a href={`/user/pool/${poolKey}`}>
                     <Button>Support</Button>
                 </a>
 
