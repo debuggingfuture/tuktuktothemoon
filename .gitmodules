@@ -4,3 +4,12 @@
 [submodule "apps/contracts/lib/openzeppelin-contracts"]
 	path = apps/contracts/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "apps/contracts/lib/solady"]
+	path = apps/contracts/lib/solady
+	url = https://github.com/vectorized/solady
+[submodule "apps/contracts/lib/webauthn-sol"]
+	path = apps/contracts/lib/webauthn-sol
+	url = https://github.com/base-org/webauthn-sol
+[submodule "apps/contracts/lib/account-abstraction"]
+	path = apps/contracts/lib/account-abstraction
+	url = https://github.com/eth-infinitism/account-abstraction

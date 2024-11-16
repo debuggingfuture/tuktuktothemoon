@@ -26,8 +26,6 @@ contract DeployRegistrarScript is Script {
         string memory baseUri = "https://storageapi.fleek.co/nfts/";
         registryFactory.deployRegistry("TUKTUK", "TUKTUK", baseUri);
 
-
-        
         // registrar = new Registrar();
     }
     function run() public {

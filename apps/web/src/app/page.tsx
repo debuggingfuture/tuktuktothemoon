@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Card } from "@repo/ui/card";
 import { CampaignCard } from "@/components/CampaignCard";
-import { CAMPAIGNS } from "@/fixutres";
+import { POOLS } from "@/fixutres";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -53,7 +53,7 @@ export default function Page(): JSX.Element {
             </div> */}
             <div className="flex flex-col">
               {
-                CAMPAIGNS.map(
+                POOLS.map(
                   ({ title, description, category }) => (
                     <CampaignCard className="p-1 mb-4" key={title} title={title} description={description} category={category} />
                   ))

@@ -1,13 +1,13 @@
 // TODO ipfs
-export const CAMPAIGNS = [
+export const POOLS = [
     {
-        key: '1',
+        key: 'pool1',
         title: 'Support your idol group',
         description: 'Dance!Dance!Dance',
         category: 'Music'
     },
     {
-        key: '2',
+        key: 'pool2',
         title: 'Unofficial Etheruem Theme Song',
         description: 'Remix and create your verison of the "Castle in the Sky"',
         category: 'Music',
@@ -28,7 +28,7 @@ export const CAMPAIGNS = [
         ]
     },
     {
-        key: '3',
+        key: 'pool3',
         title: 'Running Air Quality Monitors',
         description: 'Carrying a sensor during marathon',        
         category: 'DeSci',
@@ -42,7 +42,7 @@ export const CAMPAIGNS = [
         ]
     },
     {
-        key: '4',
+        key: 'pool4',
         title: 'Vitalik, please stop singing in Devcon',
         description: 'petition to stop vitalik',
         category: 'd/acc',

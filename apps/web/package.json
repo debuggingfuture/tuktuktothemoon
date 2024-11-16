@@ -27,6 +27,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "daisyui": "^4.12.14",
+    "input": "^1.0.1",
     "lodash": "^4.17.21",
     "lucide-react": "^0.447.0",
     "next": "^14.2.3",

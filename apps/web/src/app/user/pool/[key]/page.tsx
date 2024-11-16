@@ -34,7 +34,7 @@ import { IdentityNode } from '@/components/IdentityNode';
 import UploadDropzone from '@/components/UploadDropzone';
 import { Gallery } from '@/components/Gallery';
 import { useParams } from 'next/navigation';
-import { CAMPAIGNS } from '@/fixutres';
+import { POOLS } from '@/fixutres';
 import { FollowerBadge } from '@/components/EfpFollowers';
 import { Badge } from '@/components/ui/badge';
 
@@ -58,7 +58,7 @@ const Page = () => {
     // TODO endpoint / ifps
     const campaign = useMemo(() => {
 
-        return CAMPAIGNS.find(({ key }) => {
+        return POOLS.find(({ key }) => {
             return key === params.key;
         })
     }, []);
@@ -91,6 +91,10 @@ const Page = () => {
                     <Avatar address={address} />
                     <Address className="bg-blue-400 text-white rounded-lg" address={address} />
                     <FollowerBadge address={address} />
+
+                    <a href={`https://base-sepolia.blockscout.com/address/${address}`}>
+                        View on Blockscout
+                    </a>
                 </div>
             </div>
 
@@ -124,7 +128,7 @@ const Page = () => {
             </div>
 
 
-        </div>
+        </div >
     )
 }
 

@@ -1,2 +1,5 @@
 @openzeppelin/=lib/openzeppelin-contracts/
 forge-std/=lib/forge-std/src/
+account-abstraction/=lib/account-abstraction/contracts/
+solady/=lib/solady/src/
+webauthn-sol/=lib/webauthn-sol/src/

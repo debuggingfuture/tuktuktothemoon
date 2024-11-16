@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Card,
     CardContent,
@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { createBucket, fetchBucketFiles } from '@/app/buckets/akave';
+import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 
@@ -35,10 +36,11 @@ const useListBucket = (bucketName: string) => {
 
 const Page = () => {
 
+    const [name, setName] = useState('')
 
     const key = 'campaign-2';
     // TODO useCallback
-    const createCampaign = async () => {
+    const createPool = async () => {
         const bucketName = key;
         const results = await createBucket(key);
         console.log('results', results)
@@ -47,10 +49,16 @@ const Page = () => {
     return (
         <div className="h-100vh">
 
+            <Input placeholder="message"
+                onChange={(e) => {
+                    setName(e.target.value);
+                }}
+            />
+
             <Button onClick={async () => {
-                await createCampaign();
+                await createPool();
             }}>
-                Submit
+                Create
             </Button>
 
 

@@ -67,7 +67,13 @@ contract L2Registrar {
     /// @param label The name to register
     /// @param owner The address that will own the name
     function register(string memory label, address owner) external {
-        targetRegistry.register(label, owner);
+
+        bytes[] owners;
+        owners.push(abi.encode(owner));
+
+        CoinbaseSmartWallet sw = factory.createAccount(owners, 0);
+
+        targetRegistry.register(label, address(sw));
         // Set the mainnet resolved address
         targetRegistry.setAddr(
             keccak256(bytes(label)), // Convert label to bytes32 hash
@@ -75,11 +81,7 @@ contract L2Registrar {
             abi.encodePacked(owner) // Convert address to bytes
         );
 
-
-        bytes[] owners;
-        owners.push(abi.encode(owner));
-
-        CoinbaseSmartWallet a = factory.createAccount(owners, 0);
+        // could update txt records
 
         emit NameRegistered(label, owner);
     }

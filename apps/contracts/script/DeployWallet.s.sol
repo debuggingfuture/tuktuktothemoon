@@ -1,8 +1,9 @@
 import { Script } from "forge-std/Script.sol";
-// 
+import { CoinbaseSmartWallet } from "../src/CoinbaseSmartWallet.sol";
 import { CoinbaseSmartWalletFactory } from "../src/CoinbaseSmartWalletFactory.sol";
 
 contract DeployRegistrarScript is Script {
+    bytes[] owners;
     function setUp() public {
         owners.push(abi.encode(address(1)));
         owners.push(abi.encode(address(2)));
