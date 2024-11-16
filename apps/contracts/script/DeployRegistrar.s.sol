@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.23;
 
+import { IL2Registry }from "../src/IL2Registry.sol";
+import { L2Registry }from "../src/L2Registry.sol";
 import { L2Registrar } from "../src/L2Registrar.sol";
-import { L2RegistryFactory } from "./L2RegistryFactory.sol";
+import { L2RegistryFactory } from "../src/L2RegistryFactory.sol";
 import { console2 } from "forge-std/console2.sol";
 import { Script } from "forge-std/Script.sol";
 
@@ -16,17 +18,16 @@ contract DeployRegistrarScript is Script {
         address deployerAddress = vm.rememberKey(deployerPrivateKey);
         console2.log("deployer address", deployerAddress);
 
-        address registryFactoryAddress = vm.envAddress("REGISTRY_FACTORY_ADDRESS");
-        L2RegistryFactory registryFactory = L2RegistryFactory(registryFactoryAddress);
-
-        // address registryAddress = '';
+        // address registryFactoryAddress = vm.envAddress("REGISTRY_FACTORY_ADDRESS");
+        // L2RegistryFactory registryFactory = L2RegistryFactory(registryFactoryAddress);
         vm.startBroadcast(deployerAddress);
-
         // TODO update uri
         string memory baseUri = "https://storageapi.fleek.co/nfts/";
-        registryFactory.deployRegistry("TUKTUK", "TUKTUK", baseUri);
 
-        // registrar = new Registrar();
+        address registryAddress = 0xfc8E2d75CE1eAbC2B8ce1BC9a86a868A46B5Eec0;
+        L2Registry registry = L2Registry(registryAddress);
+        L2Registrar registrar = new L2Registrar(registry);
+
     }
     function run() public {
         deploy();

@@ -6,13 +6,15 @@
 // ***********************************************
 
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.20;
+pragma solidity 0.8.23;
 
 /// @author darianb.eth
 /// @custom:project Durin
 /// @custom:company NameStone
-
+import { CoinbaseSmartWalletFactory } from "../src/CoinbaseSmartWalletFactory.sol";
+import { CoinbaseSmartWallet } from "../src/CoinbaseSmartWallet.sol";
 import {IL2Registry} from "./IL2Registry.sol";
+import {L2Registry} from "./L2Registry.sol";
 
 /// @notice Thrown when attempting to interact with a non-existent token
 error ERC721NonexistentToken(uint256 tokenId);
@@ -27,11 +29,11 @@ contract L2Registrar {
 
     /// @notice Reference to the target registry contract
     /// @dev Immutable to save gas and prevent manipulation
-    IL2Registry public immutable targetRegistry;
+    L2Registry public immutable targetRegistry;
 
     /// @notice Initializes the registrar with a registry contract
     /// @param _registry Address of the L2Registry contract
-    constructor(IL2Registry _registry) {
+    constructor(L2Registry _registry) {
         targetRegistry = _registry;
     }
 
@@ -66,20 +68,28 @@ contract L2Registrar {
     /// @notice Registers a new name
     /// @param label The name to register
     /// @param owner The address that will own the name
-    function register(string memory label, address owner) external {
+    function register(string memory label, address owner, string memory bucket) external {
 
-        bytes[] owners;
-        owners.push(abi.encode(owner));
+        bytes[] memory owners = new bytes[](1);
+        owners[0] = abi.encodePacked(owner);
 
-        CoinbaseSmartWallet sw = factory.createAccount(owners, 0);
 
-        targetRegistry.register(label, address(sw));
+        // create smart account
+        // address factoryAddress = 0x0BA5ED0c6AA8c49038F819E587E2633c4A9F428a;
+        // CoinbaseSmartWalletFactory factory = CoinbaseSmartWalletFactory(factoryAddress);
+        // CoinbaseSmartWallet sw = factory.createAccount(owners, 12345);
+
+        // targetRegistry.register(label, address(sw));
+
+        targetRegistry.register(label, owner);
         // Set the mainnet resolved address
         targetRegistry.setAddr(
             keccak256(bytes(label)), // Convert label to bytes32 hash
             60, // Mainnet coinType
             abi.encodePacked(owner) // Convert address to bytes
         );
+
+        targetRegistry.setText(keccak256(bytes(label)), "bucket", bucket);
 
         // could update txt records
 

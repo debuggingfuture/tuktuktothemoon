@@ -18,12 +18,19 @@ We have ETH - Let's bring Economy, Trust, Human on-chain
 
 ## Features
 
-- Drag-and-drop to setup funding target
 - Mint ENS L2 name 
 - Show followers Ethereum Follower Protocol to indicate reputation
 - Create Akave Bucket to crowdsource data and art, then track for reward
+- Drag-and-drop to setup funding target
+
 
 ## How it's build
 - For each pool, we will 
  - create Akave for community to upload data and media
  - deploy L2 registrar so we can rereceive funding directly
+
+- Example of deployed Registrar (via Durin)
+  - https://sepolia.basescan.org/address/0xDcB90DBFaE41821e17256D7459830C09e10b4c55
+  
+- Note
+  - CoinbaseSmartWalletFactory on base sepolia https://sepolia.basescan.org/address/0x0ba5ed0c6aa8c49038f819e587e2633c4a9f428a#code
