@@ -73,13 +73,26 @@ export const createBucket = async (bucketName: string): Promise<{
   }
 };
 
+export const createDownloadUrl = (bucketName: string, name: string, isMetadata?: boolean)=>{
+  let fileName = name;
+  if (isMetadata){
+    fileName = name + ".json";
+  }
+  return `https://akavelink-latest.onrender.com/buckets/${bucketName}/files/${fileName}/download`;
+}
+
 // Upload file to bucket
 export const uploadFile = async (
   bucketName: string, 
-  file: any
+  file: any,
 ): Promise<{ success: boolean; transactionHash: string }> => {
   try {
     const formData = new FormData();
+
+
+      // TODO blob use ("file", file, fileName)
+      // formData.append("file", renamed);
+      
     // @ts-ignore
     formData.append("file", file);
 
@@ -87,9 +100,30 @@ export const uploadFile = async (
       method: "POST",
       body: formData,
     });
+
     const result = await response.json();
-    console.log(result);
-    return { success: result.success, transactionHash: result.data.transactionHash };
+    return { success: result.success, ...(result.data ||{}) };
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return { success: false, transactionHash: "" };
+  }
+}; 
+
+export const uploadFileObject = async (
+  bucketName: string, 
+  file: any
+): Promise<{ success: boolean; transactionHash: string }> => {
+  try {
+
+    const response = await fetch(`/api/akave/bucket/${bucketName}/files`, {
+      method: "POST",
+      body: JSON.stringify({
+        a: 123
+      }),
+    });
+
+    const result = await response.json();
+    return { success: result.success, ...(result.data ||{}) };
   } catch (error) {
     console.error("Error uploading file:", error);
     return { success: false, transactionHash: "" };

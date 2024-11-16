@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Upload, X } from "lucide-react";
-import { uploadFile as uploadFileAkave } from "@/app/buckets/akave";
+import { uploadFile as uploadFileAkave, uploadFileObject } from "@/app/buckets/akave";
 import React, { useState, useRef, useCallback } from "react";
 
 type FileWithPreview = File & {
@@ -22,9 +22,13 @@ type UploadResponse = {
 };
 
 const UploadDropzone = ({
-    bucketName
+    bucketName,
+    uploadMeta,
+    filePrefix
 }: {
-    bucketName: string
+    bucketName: string,
+    uploadMeta?: any,
+    filePrefix?: string
 }) => {
 
 
@@ -82,15 +86,30 @@ const UploadDropzone = ({
     };
 
     const uploadFile = async (file: File): Promise<UploadResponse> => {
-        const formData = new FormData();
-        formData.append("file", file);
 
-        console.log("upload file to akave", file);
+        console.log("upload file to akave", file, filePrefix);
+        const fileName = [filePrefix || '', file.name].filter(Boolean).join('___');
 
+        const renamed = new File([file], fileName, { type: file.type });
 
-        const results = await uploadFileAkave(bucketName, file);
+        const results = await uploadFileAkave(bucketName, renamed);
+
+        console.log('upload results', results)
+
+        // hack as akave need 127 bytes
+        // const content = {
+        //     ...uploadMeta || {},
+        //     text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
+        // };
+
+        // const blob = new Blob([JSON.stringify(content)], { type: "application/json" });
+
+        // const fileName = file.name + ".json";
+        // const results2 = await uploadFileAkave(bucketName, blob, fileName);
+
+        // console.log('upload metadata results', results2)
         return {
-            success: true,
+            ...results,
             message: "File uploaded successfully",
         };
     };

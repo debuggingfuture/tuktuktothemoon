@@ -15,7 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 
 
-const useCreateBucket = (bucketName: string) => {
+export const useCreateBucket = (bucketName: string) => {
     return useQuery({
         queryKey: ["akave.create", bucketName],
         queryFn: async () => {
@@ -25,7 +25,7 @@ const useCreateBucket = (bucketName: string) => {
     });
 }
 
-const useListBucket = (bucketName: string) => {
+export const useListBucket = (bucketName: string) => {
     return useQuery({
         queryKey: ["akave.list", bucketName],
         queryFn: async () => {
@@ -43,6 +43,7 @@ const Page = () => {
     const useAccount = useState('');
 
     const [akaveResults, setAkaveResults] = useState({
+        success: false,
         ID: '',
         transactionHash: ''
     })
@@ -82,18 +83,20 @@ const Page = () => {
                     <div>
                         <li>
                             <ul>
-                                ✅ Bucket Created.
-                                <div className="flex gap-2">
-                                    <div>
+                                {
+                                    akaveResults.ID && (
+                                        <div className="flex gap-2">
+                                            ✅ Bucket Created.
+                                            <div>
+                                                {`${akaveResults?.ID}`}
+                                            </div>
+                                            <a href={`http://explorer.akave.ai/tx/${akaveResults?.transactionHash}`}>
+                                                View on Akave
+                                            </a>
+                                        </div>
 
-                                        {`${akaveResults?.ID}`}
-                                    </div>
-                                    <a href={`http://explorer.akave.ai/tx/${akaveResults?.transactionHash}`}>
-                                        View on Akave
-                                    </a>
-                                </div>
-
-
+                                    )
+                                }
 
                             </ul>
                             <ul>

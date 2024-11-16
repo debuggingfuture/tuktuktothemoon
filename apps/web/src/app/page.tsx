@@ -35,7 +35,7 @@ export default function Page(): JSX.Element {
 
       <div className="z-50">
         <Link href="/editor">
-          <Button className="bg-yellow-300">create</Button>
+          <Button className="bg-yellow-300 text-blue-300">Create Tuk Tuk</Button>
         </Link>
 
       </div>

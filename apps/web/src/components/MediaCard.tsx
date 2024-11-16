@@ -24,6 +24,9 @@ export const MediaCard = (
     }
 ) => {
 
+    if (!media) return ((
+        <div></div>
+    ))
     const { heroImageSrc, createdBy } = media
 
     return (

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {
     Card,
     CardContent,
@@ -37,6 +37,9 @@ import { useParams } from 'next/navigation';
 import { POOLS } from '@/fixutres';
 import { FollowerBadge } from '@/components/EfpFollowers';
 import { Badge } from '@/components/ui/badge';
+import { useListBucket } from '../../editor/page';
+import { useAccount } from 'wagmi';
+import { createDownloadUrl } from '@/app/buckets/akave';
 
 const nodeTypes: NodeTypes = {
 
@@ -47,13 +50,14 @@ const nodeTypes: NodeTypes = {
 
 const Page = () => {
 
+    const params = useParams<{ key: string }>();
 
-    const params = useParams<{ key: string }>()
+    const account = useAccount();
 
+
+    const [media, setMedia] = React.useState<any[]>([]);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
-    const bucketName = 'bucket'
 
     // TODO endpoint / ifps
     const pool = useMemo(() => {
@@ -62,6 +66,66 @@ const Page = () => {
             return key === params.key;
         })
     }, []);
+
+
+    const { key, title = '' } = pool || {};
+
+    const bucketName = key || '';
+
+    const { data, isLoading } = useListBucket(bucketName);
+
+    const uploadMeta = {
+        createdBy: account.address,
+    }
+
+    console.log('results', data)
+
+
+    useEffect(() => {
+        ; (async () => {
+            console.log('data', data)
+            if (isLoading || !data?.length) {
+                return [];
+            }
+            const results = await Promise.all(
+                data!.filter((item: any) => !item.Name.match(/json/)).map(async (item) => {
+
+                    const { Name, RootCID, CreatedAt } = item;
+
+
+                    const createdBy = Name.split('___')?.[0];
+                    // const url = `https://ipfs.io/ipfs/${RootCID}/${Name}`;
+                    const akaveUrl = createDownloadUrl(bucketName, Name);
+
+                    const akaveMetadataUrl = createDownloadUrl(bucketName, Name, true);
+                    // const akaveUrl = `https://akavelink-latest.onrender.com/buckets/${bucketName}/files/${Name}/download`;
+                    // const akaveMetadataUrl = `https://akavelink-latest.onrender.com/${bucketName}/files/${Name}.json/download`;
+
+                    console.log('fetch file', item, akaveUrl, akaveMetadataUrl)
+                    try {
+                        // CORS error
+                        // const meta = await fetch(akaveMetadataUrl).then((res) => { return res.json() });
+
+                        // console.log('meta', meta)
+                        return {
+                            heroImageSrc: akaveUrl,
+                            createdBy
+                        }
+                    } catch (err) {
+                        console.log(err);
+
+                        return {}
+                    }
+
+                })
+            );
+            setMedia(results)
+        })();
+    }, [isLoading])
+
+
+
+
 
     // const onConnect = useCallback(
     //     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -73,13 +137,17 @@ const Page = () => {
     if (!pool) {
         return <div>404</div>
     }
-    const { key, title = '' } = pool;
 
     return (
         <div className="h-100vh container p-16">
             <h2 className="text-2xl">Pool: {title}</h2>
 
             <div className="pr-2">
+                {
+                    isLoading ? (
+                        'loading...'
+                    ) : data?.length
+                }
 
                 <div className="flex flex-row">
                     ENS
@@ -104,7 +172,8 @@ const Page = () => {
             </div>
 
             <div>
-                <Gallery />
+                <Gallery
+                    media={media} />
             </div>
             <h2 className="text-2xl">Distributions</h2>
 
@@ -128,7 +197,9 @@ const Page = () => {
                 <h2 className="text-2xl m-2 p-2">
                     Upload
                 </h2>
-                <UploadDropzone bucketName={bucketName} />
+                <UploadDropzone bucketName={bucketName}
+                    filePrefix={account.address}
+                    uploadMeta={uploadMeta} />
 
             </div>
 
