@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Upload, X } from "lucide-react";
+import { uploadFile as uploadFileAkave } from "@/app/buckets/akave";
 import React, { useState, useRef, useCallback } from "react";
 
 type FileWithPreview = File & {
@@ -20,7 +21,13 @@ type UploadResponse = {
     url?: string;
 };
 
-const UploadDropzone: React.FC = () => {
+const UploadDropzone = ({
+    bucketName
+}: {
+    bucketName: string
+}) => {
+
+
     const [files, setFiles] = useState<FileWithPreview[]>([]);
     const [error, setError] = useState<UploadError | null>(null);
     const [isDragActive, setIsDragActive] = useState(false);
@@ -78,8 +85,10 @@ const UploadDropzone: React.FC = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        console.log("upload file", file);
+        console.log("upload file to akave", file);
 
+
+        const results = await uploadFileAkave(bucketName, file);
         return {
             success: true,
             message: "File uploaded successfully",

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
     Card,
     CardContent,
@@ -32,19 +32,34 @@ import '@xyflow/react/dist/style.css';
 import MetaNode from '@/components/MetaNode';
 import { IdentityNode } from '@/components/IdentityNode';
 import UploadDropzone from '@/components/UploadDropzone';
+import { Gallery } from '@/components/Gallery';
+import { useParams } from 'next/navigation';
+import { CAMPAIGNS } from '@/fixutres';
 
 const nodeTypes: NodeTypes = {
 
     'meta': MetaNode,
     'identity': IdentityNode,
-
 };
 
 
 const Page = () => {
+
+
+    const params = useParams<{ key: string }>()
+
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
+    const bucketName = 'bucket'
+
+    // TODO endpoint / ifps
+    const campaign = useMemo(() => {
+
+        return CAMPAIGNS.find(({ key }) => {
+            return key === params.key;
+        })
+    }, []);
 
     // const onConnect = useCallback(
     //     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -56,10 +71,10 @@ const Page = () => {
         <div className="h-100vh container">
             <h2 className="text-2xl">Pool</h2>
 
-            <div className="p-2">
-                <span className="pr-2">
+            <div className="flex flex-row p-2">
+                <div className="pr-2">
                     Created By
-                </span>
+                </div>
                 <div className="flex flex-row align-middle text-center items-center">
                     <Avatar address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
                     <Address address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
@@ -67,6 +82,9 @@ const Page = () => {
                 </div>
             </div>
 
+            <div>
+                <Gallery />
+            </div>
             <h2 className="text-2xl">Distributions</h2>
 
             <div style={{ height: '70vh', width: '100%' }}>
@@ -84,15 +102,16 @@ const Page = () => {
                 </ReactFlow>
 
             </div >
-            <div>
-                Display files
-            </div>
-            <div>
-                Upload File here
 
-                <UploadDropzone />
+            <div>
+                <h2 className="text-2xl">
+                    Upload File here
+                </h2>
+                <UploadDropzone bucketName={bucketName} />
 
             </div>
+
+
         </div>
     )
 }

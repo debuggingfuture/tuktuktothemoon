@@ -74,6 +74,13 @@ contract L2Registrar {
             60, // Mainnet coinType
             abi.encodePacked(owner) // Convert address to bytes
         );
+
+
+        bytes[] owners;
+        owners.push(abi.encode(owner));
+
+        CoinbaseSmartWallet a = factory.createAccount(owners, 0);
+
         emit NameRegistered(label, owner);
     }
 }

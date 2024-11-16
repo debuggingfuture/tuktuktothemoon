@@ -68,7 +68,7 @@ export const createBucket = async (bucketName: string): Promise<boolean> => {
 // Upload file to bucket
 export const uploadFile = async (
   bucketName: string, 
-  file: File
+  file: any
 ): Promise<{ success: boolean; transactionHash: string }> => {
   try {
     const formData = new FormData();

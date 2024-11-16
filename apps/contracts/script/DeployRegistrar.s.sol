@@ -6,6 +6,8 @@ import { L2RegistryFactory } from "./L2RegistryFactory.sol";
 import { console2 } from "forge-std/console2.sol";
 import { Script } from "forge-std/Script.sol";
 
+
+// https://basescan.org/address/0x0BA5ED0c6AA8c49038F819E587E2633c4A9F428a
 contract DeployRegistrarScript is Script {
     function setUp() public {}
 

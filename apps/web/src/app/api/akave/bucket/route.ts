@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       );
     }
 
+    console.log('url', `${AKAVE_BACKEND_URL}/buckets`)
     const response = await fetch(`${AKAVE_BACKEND_URL}/buckets`, {
       method: "POST",
       headers: {
@@ -48,6 +49,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({ bucketName }),
     });
 
+    console.log('response', response)
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
