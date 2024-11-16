@@ -1,11 +1,13 @@
 // TODO ipfs
 export const CAMPAIGNS = [
     {
+        key: '1',
         title: 'Support your idol group',
         description: 'Dance!Dance!Dance',
         category: 'Music'
     },
     {
+        key: '2',
         title: 'Unofficial Etheruem Theme Song',
         description: 'Remix and create your verison of the "Castle in the Sky"',
         category: 'Music',
@@ -26,6 +28,7 @@ export const CAMPAIGNS = [
         ]
     },
     {
+        key: '3',
         title: 'Running Air Quality Monitors',
         description: 'Carrying a sensor during marathon',        
         category: 'DeSci',
@@ -39,6 +42,7 @@ export const CAMPAIGNS = [
         ]
     },
     {
+        key: '4',
         title: 'Vitalik, please stop singing in Devcon',
         description: 'petition to stop vitalik',
         category: 'd/acc',

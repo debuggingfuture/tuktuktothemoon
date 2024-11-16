@@ -10,7 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-import { Avatar } from '@coinbase/onchainkit/identity';
+import { Address, Avatar } from '@coinbase/onchainkit/identity';
 
 
 import {
@@ -31,6 +31,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import MetaNode from '@/components/MetaNode';
 import { IdentityNode } from '@/components/IdentityNode';
+import UploadDropzone from '@/components/UploadDropzone';
 
 const nodeTypes: NodeTypes = {
 
@@ -52,11 +53,21 @@ const Page = () => {
 
 
     return (
-        <div className="h-100vh">
-            Pool
+        <div className="h-100vh container">
+            <h2 className="text-2xl">Pool</h2>
 
-            Created By
-            <Avatar address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
+            <div className="p-2">
+                <span className="pr-2">
+                    Created By
+                </span>
+                <div className="flex flex-row align-middle text-center items-center">
+                    <Avatar address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
+                    <Address address="0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9" />
+
+                </div>
+            </div>
+
+            <h2 className="text-2xl">Distributions</h2>
 
             <div style={{ height: '70vh', width: '100%' }}>
                 <ReactFlow
@@ -78,6 +89,9 @@ const Page = () => {
             </div>
             <div>
                 Upload File here
+
+                <UploadDropzone />
+
             </div>
         </div>
     )

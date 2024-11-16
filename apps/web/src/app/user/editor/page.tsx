@@ -14,6 +14,12 @@ const Page = () => {
         <div className="h-100vh">
             Editor
 
+
+            <h1>
+                Enter Pool Details
+            </h1>
+
+
         </div>
     )
 }
