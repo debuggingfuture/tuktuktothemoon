@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { File } from "../calls";
+import { File } from "../akave";
 import { formatDate, formatFileSize, getFileTypeInfo } from "../utils";
 import { ChevronDownIcon, ChevronRightIcon, ArrowDownTrayIcon, ShareIcon } from "@heroicons/react/24/outline";
 import { DocEndpoint } from "./doc-component";

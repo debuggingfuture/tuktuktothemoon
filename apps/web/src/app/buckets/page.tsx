@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { PlusIcon, FolderIcon, CalendarIcon, ArchiveBoxIcon } from "@heroicons/react/24/outline";
-import { fetchBuckets, createBucket, uploadFile, type Bucket, type File } from "./calls";
+import { fetchBuckets, createBucket, uploadFile, type Bucket, type File } from "./akave";
 import { formatDate } from "./utils";
 import { FilePreview } from "./components/FilePreview";
 import { DocEndpoint } from "./components/doc-component";
@@ -249,11 +249,10 @@ export default function BucketsPage() {
                       {selectedFiles.length > 0 && (
                         <button
                           onClick={() => handleUploadFiles(bucket.Name)}
-                          className={`btn border-2 border-black min-w-[100px] ${
-                            isLoading
+                          className={`btn border-2 border-black min-w-[100px] ${isLoading
                               ? "bg-black text-white hover:bg-black disabled:bg-black disabled:text-white"
                               : "bg-black hover:bg-gray-800 text-white"
-                          }`}
+                            }`}
                           disabled={isLoading}
                         >
                           {isLoading ? (
@@ -295,19 +294,19 @@ export default function BucketsPage() {
                                     <span className="loading loading-spinner loading-sm text-black"></span>
                                   )}
                                   {fileStatus?.completed && (
-                                    <svg 
-                                    className="w-5 h-5 text-green-500" 
-                                    fill="none" 
-                                    stroke="currentColor" 
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path 
-                                      strokeLinecap="round" 
-                                      strokeLinejoin="round" 
-                                      strokeWidth="2" 
-                                      d="M5 13l4 4L19 7"
-                                    />
-                                  </svg>
+                                    <svg
+                                      className="w-5 h-5 text-green-500"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M5 13l4 4L19 7"
+                                      />
+                                    </svg>
                                   )}
                                   {!fileStatus?.loading && !fileStatus?.completed && (
                                     <button
