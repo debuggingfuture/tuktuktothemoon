@@ -48,7 +48,11 @@ export const fetchBuckets = async (): Promise<Bucket[]> => {
 };
 
 // Create a new bucket
-export const createBucket = async (bucketName: string): Promise<boolean> => {
+export const createBucket = async (bucketName: string): Promise<{
+  success: boolean,
+  error?: any,
+  data?: any
+}> => {
   try {
     const response = await fetch("/api/akave/bucket", {
       method: "POST",
@@ -58,10 +62,14 @@ export const createBucket = async (bucketName: string): Promise<boolean> => {
       body: JSON.stringify({ bucketName }),
     });
     const result = await response.json();
-    return result.success;
+    return result;
   } catch (error) {
+    // TODO error for duplicated is shown as 'Unexpected output format for bucket creation'
     console.error("Error creating bucket:", error);
-    return false;
+    return {
+      success: false,
+      error
+    };
   }
 };
 

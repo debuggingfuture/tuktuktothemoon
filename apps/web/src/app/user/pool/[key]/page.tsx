@@ -56,7 +56,7 @@ const Page = () => {
     const bucketName = 'bucket'
 
     // TODO endpoint / ifps
-    const campaign = useMemo(() => {
+    const pool = useMemo(() => {
 
         return POOLS.find(({ key }) => {
             return key === params.key;
@@ -70,16 +70,21 @@ const Page = () => {
 
     const address = '0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9';
 
+    if (!pool) {
+        return <div>404</div>
+    }
+    const { key, title = '' } = pool;
+
     return (
-        <div className="h-100vh container">
-            <h2 className="text-2xl">Pool</h2>
+        <div className="h-100vh container p-16">
+            <h2 className="text-2xl">Pool: {title}</h2>
 
             <div className="pr-2">
 
                 <div className="flex flex-row">
-                    Pool ENS
+                    ENS
                     <Badge>
-                        tuktuktothemoon.eth
+                        {key}.tuktuktothemoon.eth
                     </Badge>
                 </div>
             </div>
@@ -92,7 +97,7 @@ const Page = () => {
                     <Address className="bg-blue-400 text-white rounded-lg" address={address} />
                     <FollowerBadge address={address} />
 
-                    <a href={`https://base-sepolia.blockscout.com/address/${address}`}>
+                    <a className="underline text-sm" href={`https://base-sepolia.blockscout.com/address/${address}`}>
                         View on Blockscout
                     </a>
                 </div>
@@ -120,8 +125,8 @@ const Page = () => {
             </div >
 
             <div>
-                <h2 className="text-2xl">
-                    Upload File here
+                <h2 className="text-2xl m-2 p-2">
+                    Upload
                 </h2>
                 <UploadDropzone bucketName={bucketName} />
 

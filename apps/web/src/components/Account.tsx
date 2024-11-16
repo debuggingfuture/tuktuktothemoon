@@ -1,3 +1,5 @@
+import { Address as AddressBadge, Avatar } from '@coinbase/onchainkit/identity'
+import { Address } from 'viem'
 import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 
 export function Account() {
@@ -8,9 +10,14 @@ export function Account() {
 
     return (
         <div>
-            {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
-            {address && <div>{ensName ? `${ensName} (${address})` : address}</div>}
-            <button onClick={() => disconnect()}>Disconnect</button>
+            {/* {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />} */}
+            {address && (
+                <div>
+                    {/* <Avatar address={address as Address} /> */}
+                    <AddressBadge address={address} />
+                </div>
+            )}
+            {/* <button onClick={() => disconnect()}>Disconnect</button> */}
         </div>
     )
 }

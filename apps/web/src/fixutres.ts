@@ -1,14 +1,8 @@
 // TODO ipfs
 export const POOLS = [
     {
-        key: 'pool1',
-        title: 'Support your idol group',
-        description: 'Dance!Dance!Dance',
-        category: 'Music'
-    },
-    {
         key: 'pool2',
-        title: 'Unofficial Etheruem Theme Song',
+        title: 'Remix the Unofficial Etheruem Theme Song',
         description: 'Remix and create your verison of the "Castle in the Sky"',
         category: 'Music',
         distributions: [
@@ -29,8 +23,8 @@ export const POOLS = [
     },
     {
         key: 'pool3',
-        title: 'Running Air Quality Monitors',
-        description: 'Carrying a sensor during marathon',        
+        title: 'Running Air Quality Monitors in Bangkok',
+        description: 'Carrying a sensor during the Bangkok Marathon 2024',        
         category: 'DeSci',
         distributions: [
             {

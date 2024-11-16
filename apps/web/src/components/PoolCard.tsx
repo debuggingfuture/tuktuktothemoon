@@ -10,8 +10,9 @@ import { Button } from "./ui/button"
 import { Badge } from "./ui/badge"
 
 
-export const CampaignCard = (
+export const PoolCard = (
     {
+        key,
         title,
         description,
         category,
@@ -29,7 +30,10 @@ export const CampaignCard = (
                 <Badge className="bg-blue-400">{category}</Badge>
             </CardContent>
             <CardFooter>
-                <Button>Support</Button>
+                <a href={`/user/pool/${key}`}>
+                    <Button>Support</Button>
+                </a>
+
             </CardFooter>
         </Card>
     )

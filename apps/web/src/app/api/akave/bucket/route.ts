@@ -49,7 +49,6 @@ export async function POST(request: Request) {
       body: JSON.stringify({ bucketName }),
     });
 
-    console.log('response', response)
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
