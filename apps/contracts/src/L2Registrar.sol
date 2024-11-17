@@ -73,15 +73,13 @@ contract L2Registrar {
         bytes[] memory owners = new bytes[](1);
         owners[0] = abi.encodePacked(owner);
 
-
         // create smart account
-        // address factoryAddress = 0x0BA5ED0c6AA8c49038F819E587E2633c4A9F428a;
-        // CoinbaseSmartWalletFactory factory = CoinbaseSmartWalletFactory(factoryAddress);
-        // CoinbaseSmartWallet sw = factory.createAccount(owners, 12345);
+        address factoryAddress = 0x0BA5ED0c6AA8c49038F819E587E2633c4A9F428a;
+        CoinbaseSmartWalletFactory factory = CoinbaseSmartWalletFactory(factoryAddress);
+        CoinbaseSmartWallet sw = factory.createAccount(owners, 12345);
+        targetRegistry.register(label, address(sw));
 
-        // targetRegistry.register(label, address(sw));
-
-        targetRegistry.register(label, owner);
+        // targetRegistry.register(label, owner);
         // Set the mainnet resolved address
         targetRegistry.setAddr(
             keccak256(bytes(label)), // Convert label to bytes32 hash

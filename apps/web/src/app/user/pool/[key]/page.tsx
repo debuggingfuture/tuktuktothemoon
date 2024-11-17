@@ -169,7 +169,7 @@ const Page = () => {
                 <Gallery
                     media={media} />
             </div>
-            <h2 className="text-2xl">Distributions</h2>
+            {/* <h2 className="text-2xl">Distributions</h2>
 
             <div style={{ height: '70vh', width: '100%' }}>
                 <ReactFlow
@@ -185,7 +185,7 @@ const Page = () => {
                     <Background />
                 </ReactFlow>
 
-            </div >
+            </div > */}
 
             <div>
                 <h2 className="text-2xl m-2 p-2">

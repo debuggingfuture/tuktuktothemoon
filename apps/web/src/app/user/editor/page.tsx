@@ -14,6 +14,10 @@ import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
+import { useAccount, useSimulateContract, useWriteContract } from 'wagmi';
+import { L2_REGISTRY_ABI } from '@/lib/ens-abi';
+import { Address } from 'cluster';
+import { Account } from 'viem';
 
 
 export const useCreateBucket = (bucketName: string) => {
@@ -36,12 +40,49 @@ export const useListBucket = (bucketName: string) => {
     });
 }
 
+const ENS_REGISTRY_ADDRESS = '0xfc8E2d75CE1eAbC2B8ce1BC9a86a868A46B5Eec0';
+const ENS_REGISTRAR_ADDRESS = '0x4b6bcced803bad105504cd587d3d189c72b2a269';
+
+export const useAddEnsTextRecords = (ownerAddress: Address, bucketName: string, distribution: Record<string, number>) => {
+    const node = 'moon1.tuktuktothemoon.eth';
+    const { data, isLoading, isError, error } = useSimulateContract({
+        address: ENS_REGISTRAR_ADDRESS,
+        abi: L2_REGISTRY_ABI,
+        functionName: 'register',
+        args: [node, ownerAddress, bucketName],
+    });
+
+    console.log('data', data, isLoading)
+    console.log('isError', isError, error);
+
+    // createWalletContract()
+    const { writeContract } = useWriteContract()
+
+
+    console.log('write contract',);
+
+
+    const createWalletContract = () => ({
+        address: ENS_REGISTRAR_ADDRESS,
+        abi: L2_REGISTRY_ABI,
+        functionName: 'register',
+        args: [node, ownerAddress, bucketName],
+    });
+
+    return {
+        createWalletContract,
+        isLoading,
+        data
+    }
+}
+
+
+
 const Page = () => {
 
     const [name, setName] = useState('');
 
-
-    const useAccount = useState('');
+    const account = useAccount();
 
     const [akaveResults, setAkaveResults] = useState({
         success: false,
@@ -51,12 +92,20 @@ const Page = () => {
 
     const [isCreated, setIsCreated] = useState(false);
 
+    const distribution = {
+        ['0x9']: 100
+    }
+    // TODO distribution from retool
+
+    const results = useAddEnsTextRecords(account.address as unknown as Address, name, distribution);
+
     // TODO useCallback
     const createPool = async () => {
         const results = await createBucket(name);
         console.log('results', results)
         setAkaveResults(results?.data as any);
         setIsCreated(true);
+
     }
 
     return (
@@ -83,13 +132,19 @@ const Page = () => {
             }}>
                 Create
             </Button>
+            <Button onClick={async () => {
+
+                console.log('config', results)
+            }}>
+                Register Name
+            </Button>
             {
                 isCreated && (
                     <div>
                         <li>
                             <ul>
                                 {
-                                    akaveResults.ID && (
+                                    akaveResults?.ID && (
                                         <div className="flex gap-2">
                                             ✅ Bucket Created.
                                             <div>

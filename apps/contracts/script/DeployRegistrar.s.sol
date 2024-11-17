@@ -28,6 +28,8 @@ contract DeployRegistrarScript is Script {
         L2Registry registry = L2Registry(registryAddress);
         L2Registrar registrar = new L2Registrar(registry);
 
+        registry.addRegistrar(address(registrar));
+
     }
     function run() public {
         deploy();

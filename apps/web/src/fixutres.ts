@@ -1,7 +1,7 @@
 // TODO ipfs
 export const POOLS = [
     {
-        key: 'pool2',
+        key: 'moon1',
         title: 'Remix the Unofficial Etheruem Theme Song',
         description: 'Remix and create your verison of the "Castle in the Sky"',
         category: 'Music',
@@ -22,7 +22,7 @@ export const POOLS = [
         ]
     },
     {
-        key: 'pool3',
+        key: 'moon2',
         title: 'Running Air Quality Monitors in Bangkok',
         description: 'Carrying a sensor during the Bangkok Marathon 2024',        
         category: 'DeSci',
@@ -36,7 +36,7 @@ export const POOLS = [
         ]
     },
     {
-        key: 'pool4',
+        key: 'moon4',
         title: 'Vitalik, please stop singing in Devcon',
         description: 'petition to stop vitalik',
         category: 'd/acc',
