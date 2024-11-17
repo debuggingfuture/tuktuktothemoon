@@ -7,12 +7,17 @@ import {
     Position,
 } from '@xyflow/react';
 import type { NodeProps } from "@xyflow/react";
+import { Input } from './ui/input';
+import { useState } from 'react';
+import { Address } from 'viem';
 
-type IdentityNodeProps = Node<{
+type AccountNodeProps = Node<{
+    accountName: string,
     onNameChange: (id: string, name: string) => void;
     onModelChange: (id: string, model: string) => void;
 }>
-export const IdentityNode: React.FC<NodeProps<IdentityNodeProps>> = (props: NodeProps<IdentityNodeProps>) => {
+export const AccountNode: React.FC<NodeProps<AccountNodeProps>> = (props: NodeProps<AccountNodeProps>) => {
+    const { data: { accountName } } = props;
     return (
         <>
             <Handle
@@ -20,6 +25,11 @@ export const IdentityNode: React.FC<NodeProps<IdentityNodeProps>> = (props: Node
                 position={Position.Left}
                 isConnectable
             />
+
+            <div>
+                {accountName}.tuktuktothemoon.eth
+            </div>
+
 
         </>
     )

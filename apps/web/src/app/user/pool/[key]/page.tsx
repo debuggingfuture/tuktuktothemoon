@@ -31,7 +31,7 @@ import {
 
 import '@xyflow/react/dist/style.css';
 import MetaNode from '@/components/MetaNode';
-import { IdentityNode } from '@/components/IdentityNode';
+import { RecipientNode } from '@/components/RecipientNode';
 import UploadDropzone from '@/components/UploadDropzone';
 import { Gallery } from '@/components/Gallery';
 import { useParams } from 'next/navigation';
@@ -41,12 +41,6 @@ import { Badge } from '@/components/ui/badge';
 import { useListBucket } from '../../editor/page';
 import { useAccount } from 'wagmi';
 import { createDownloadUrl } from '@/app/buckets/akave';
-
-const nodeTypes: NodeTypes = {
-
-    'meta': MetaNode,
-    'identity': IdentityNode,
-};
 
 
 const Page = () => {
@@ -59,6 +53,7 @@ const Page = () => {
     const [media, setMedia] = React.useState<any[]>([]);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
 
     // TODO endpoint / ifps
     const pool = useMemo(() => {
@@ -184,7 +179,7 @@ const Page = () => {
 
             <div>
                 <h2 className="text-2xl m-2 p-2">
-                    Upload
+                    Contribute your data & media
                 </h2>
                 <UploadDropzone bucketName={bucketName}
                     filePrefix={account.address}

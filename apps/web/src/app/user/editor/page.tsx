@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     Card,
     CardContent,
@@ -19,6 +19,8 @@ import { L2_REGISTRAR_ABI, L2_REGISTRY_ABI } from '@/lib/ens-abi';
 import { Address } from 'cluster';
 import { Account, Hex, keccak256, labelhash } from 'viem';
 import { writeContract } from 'viem/actions';
+import { Background, Edge, MarkerType, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react';
+import { NodeType, nodeTypes } from '@/components/Nodes';
 
 
 export const useCreateBucket = (bucketName: string) => {
@@ -115,6 +117,61 @@ const Page = () => {
 
     })
 
+    const [nodes, setNodes, onNodesChange] = useNodesState([
+
+    ]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+
+    useEffect(() => {
+        if (!name) {
+            return;
+        }
+        //@ts-ignore
+        setNodes([{
+            type: NodeType.Account,
+            id: 'account-1',
+            position: {
+                x: 0,
+                y: 100
+            },
+            data: {
+                accountName: name
+            }
+        }])
+        console.log('nodes updated', nodes.length)
+    }, [name])
+
+    const addRecipient = useCallback(() => {
+
+        const id = 'recipient-' + nodes.length;
+        console.log('add recipient', id);
+        const recipientNode = {
+            type: NodeType.Recipient,
+            id,
+            position: {
+                x: 100 + nodes.length * 300,
+                y: 100
+            },
+            data: {}
+        }
+        const newEdge: Edge = {
+            id: `edge-account-${id}`,
+            source: 'account-1',
+            target: recipientNode.id,
+            markerEnd: { type: MarkerType.ArrowClosed },
+        };
+
+        console.log('nodes length', nodes.length)
+
+        //@ts-ignore
+        setNodes([...nodes, recipientNode]);
+        //@ts-ignore
+        setEdges([...edges, newEdge]);
+
+    }, [nodes.length, edges.length]);
+
+
     const [akaveResults, setAkaveResults] = useState({
         success: false,
         ID: '',
@@ -139,12 +196,15 @@ const Page = () => {
 
     }
 
+
+
     return (
-        <div className="h-100vh container p-40">
+        <div className="h-100vh container p-20">
 
             <Label>Pool Name</Label>
             <div className="m-4">
-                <Input placeholder="name"
+                <Input
+                    placeholder="name"
                     className="text-black"
                     value={name}
                     onChange={(e) => {
@@ -154,30 +214,53 @@ const Page = () => {
             </div>
 
 
-            <h1>
-                Enter Pool Details
-            </h1>
+            <h2 className="text-2xl"> Setup Pool Distributions</h2>
 
-            <Button onClick={async () => {
-                await createPool();
-            }}>
-                Create
-            </Button>
-            <Button onClick={async () => {
+            <div style={{ height: '50vh', width: '100%' }}>
+                <ReactFlow
+                    fitView
+                    nodes={nodes}
+                    edges={edges}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    // onConnect={onConnect}
+                    nodeTypes={nodeTypes}
+                // edgeTypes={edgeTypes}
+                >
+                    {/* <Background /> */}
+                </ReactFlow>
 
-                console.log('writeContract')
-                const results = await register();
-                if (results) {
-                    setEnsResults({
-                        registerTxnHash
-                    });
-                    console.log('registerResults', results);
-                }
+            </div >
 
-                await updateTxtRecords();
-            }}>
-                Register Name
-            </Button>
+            <div className="flex flex-row gap-2">
+                <Button onClick={async () => {
+                    await createPool();
+                }}>
+                    Create
+                </Button>
+                <Button onClick={async () => {
+
+                    console.log('writeContract')
+                    const results = await register();
+                    if (results) {
+                        setEnsResults({
+                            registerTxnHash
+                        });
+                        console.log('registerResults', results);
+                    }
+
+                    await updateTxtRecords();
+                }}>
+                    Register Name
+                </Button>
+
+                <Button onClick={
+                    () => {
+                        addRecipient();
+                    }
+                } >Add Recipient</Button>
+            </div>
+
             {
                 <div className="w-1/2">
                     <ul>
