@@ -69,7 +69,7 @@ export const UserProvider = ({ children, environmentId }: { children: any, envir
                             apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
                             chain={baseSepolia} // add baseSepolia for testing
                         >
-                            <nav className="flex flex-row items-center justify-between pb-15 pull-right">
+                            <nav className="flex flex-row items-center justify-between pb-15 pull-right p-10 m-2">
                                 {/* <ConnectWallet /> */}
 
                                 <DynamicWidget />

@@ -13,6 +13,7 @@ import { Badge } from "./ui/badge"
 export const PoolCard = (
     {
         poolKey,
+        createdBy,
         title,
         description,
         category,

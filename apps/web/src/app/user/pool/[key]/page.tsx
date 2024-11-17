@@ -10,7 +10,8 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-import { Address, Avatar } from '@coinbase/onchainkit/identity';
+import { Address } from 'viem';
+import { Address as AddressBadge, Avatar } from '@coinbase/onchainkit/identity';
 
 
 import {
@@ -68,7 +69,9 @@ const Page = () => {
     }, []);
 
 
-    const { key, title = '' } = pool || {};
+    const { key, title = '', createdBy } = pool || {};
+
+    const createdByAddress = createdBy as Address;
 
     const bucketName = key || '';
 
@@ -124,15 +127,7 @@ const Page = () => {
     }, [isLoading])
 
 
-
-
-
-    // const onConnect = useCallback(
-    //     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    //     [setEdges]
-    // );
-
-    const address = '0x838aD0EAE54F99F1926dA7C3b6bFbF617389B4D9';
+    // Fix resolve from ens
 
     if (!pool) {
         return <div>404</div>
@@ -155,11 +150,11 @@ const Page = () => {
                     Created By
                 </div>
                 <div className="flex flex-row align-middle text-center items-center gap-3 ">
-                    <Avatar address={address} />
-                    <Address className="bg-blue-400 text-white rounded-lg" address={address} />
-                    <FollowerBadge address={address} />
+                    <Avatar address={createdByAddress} />
+                    <AddressBadge className="bg-blue-400 text-white rounded-lg" address={createdByAddress} />
+                    <FollowerBadge address={createdByAddress} />
 
-                    <a className="underline text-sm" href={`https://base-sepolia.blockscout.com/address/${address}`}>
+                    <a className="underline text-sm" href={`https://base-sepolia.blockscout.com/address/${createdByAddress}`}>
                         View on Blockscout
                     </a>
                 </div>
