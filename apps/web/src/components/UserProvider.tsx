@@ -1,8 +1,8 @@
-// import {
-//     DynamicContextProvider,
-//     DynamicWidget,
-// } from "@dynamic-labs/sdk-react-core";
-// import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
+import {
+    DynamicContextProvider,
+    DynamicWidget,
+} from "@dynamic-labs/sdk-react-core";
+import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { base } from 'wagmi/chains';
@@ -23,11 +23,11 @@ const config = createConfig({
     chains: [sepolia, baseSepolia],
     ssr: true,
     connectors: [
-        coinbaseWallet({
-            appName: "TTTTM",
-            preference: 'smartWalletOnly',
-            version: '4',
-        }),
+        // coinbaseWallet({
+        //     appName: "TTTTM",
+        //     preference: 'smartWalletOnly',
+        //     version: '4',
+        // }),
     ],
     multiInjectedProviderDiscovery: false,
     transports: {
@@ -45,34 +45,42 @@ function ConnectWallet() {
 }
 
 
-// TODO dynamic
-
 export const UserProvider = ({ children, environmentId }: { children: any, environmentId: string }) => {
 
     return <div>
+        <DynamicContextProvider
+            settings={{
+                environmentId,
+                walletConnectors: [EthereumWalletConnectors],
+            }}
+        >
+            <WagmiProvider config={config}>
+                <QueryClientProvider client={queryClient}>
+                    <DynamicWagmiConnector>
+                        <OnchainKitProvider
+                            config={{
+                                appearance: {
+                                    name: 'OnchainKit Playground',
+                                    logo: 'https://onchainkit.xyz/favicon/48x48.png?v4-19-24',
+                                    mode: 'auto',
+                                    theme: 'default',
+                                },
+                            }}
+                            apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+                            chain={baseSepolia} // add baseSepolia for testing
+                        >
+                            <nav className="flex flex-row items-center justify-between pb-15 pull-right">
+                                {/* <ConnectWallet /> */}
 
-        <WagmiProvider config={config}>
-            <QueryClientProvider client={queryClient}>
-                <OnchainKitProvider
-                    config={{
-                        appearance: {
-                            name: 'OnchainKit Playground',
-                            logo: 'https://onchainkit.xyz/favicon/48x48.png?v4-19-24',
-                            mode: 'auto',
-                            theme: 'default',
-                        },
-                    }}
-                    apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-                    chain={baseSepolia} // add baseSepolia for testing
-                >
-                    <nav className="flex flex-row items-center justify-between pb-15 pull-right">
-                        <ConnectWallet />
-                    </nav>
-                    <div className="pt-5">
-                        {children}
-                    </div>
-                </OnchainKitProvider>
-            </QueryClientProvider>
-        </WagmiProvider>
+                                <DynamicWidget />
+                            </nav>
+                            <div className="pt-5">
+                                {children}
+                            </div>
+                        </OnchainKitProvider>
+                    </DynamicWagmiConnector>
+                </QueryClientProvider>
+            </WagmiProvider>
+        </DynamicContextProvider>
     </div >
 }

@@ -15,9 +15,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { useAccount, useSimulateContract, useWriteContract } from 'wagmi';
-import { L2_REGISTRY_ABI } from '@/lib/ens-abi';
+import { L2_REGISTRAR_ABI, L2_REGISTRY_ABI } from '@/lib/ens-abi';
 import { Address } from 'cluster';
-import { Account } from 'viem';
+import { Account, Hex, keccak256, labelhash } from 'viem';
+import { writeContract } from 'viem/actions';
 
 
 export const useCreateBucket = (bucketName: string) => {
@@ -40,39 +41,65 @@ export const useListBucket = (bucketName: string) => {
     });
 }
 
-const ENS_REGISTRY_ADDRESS = '0xfc8E2d75CE1eAbC2B8ce1BC9a86a868A46B5Eec0';
-const ENS_REGISTRAR_ADDRESS = '0x4b6bcced803bad105504cd587d3d189c72b2a269';
-
-export const useAddEnsTextRecords = (ownerAddress: Address, bucketName: string, distribution: Record<string, number>) => {
-    const node = 'moon1.tuktuktothemoon.eth';
-    const { data, isLoading, isError, error } = useSimulateContract({
-        address: ENS_REGISTRAR_ADDRESS,
-        abi: L2_REGISTRY_ABI,
-        functionName: 'register',
-        args: [node, ownerAddress, bucketName],
-    });
-
-    console.log('data', data, isLoading)
-    console.log('isError', isError, error);
-
-    // createWalletContract()
-    const { writeContract } = useWriteContract()
+const L2_REGISTRY_ADDRESS = '0xfc8E2d75CE1eAbC2B8ce1BC9a86a868A46B5Eec0';
+const L2_REGISTRAR_ADDRESS = '0x4b6bcced803bad105504cd587d3d189c72b2a269';
 
 
-    console.log('write contract',);
+export const useRegisterEns = (ownerAddress: Address, name: string, distribution: Record<string, number>) => {
+    const node = `${name}.tuktuktothemoon.eth`;
 
+    const bucketName = name;
 
-    const createWalletContract = () => ({
-        address: ENS_REGISTRAR_ADDRESS,
-        abi: L2_REGISTRY_ABI,
-        functionName: 'register',
-        args: [node, ownerAddress, bucketName],
-    });
+    // const { data, isLoading, isError, error } = useSimulateContract({
+    //     address: L2_REGISTRAR_ADDRESS,
+    //     abi: L2_REGISTRAR_ABI,
+    //     functionName: 'register',
+    //     args: [node, ownerAddress, bucketName],
+    // });
+
+    // console.log('simulate contract', isError, error);
+
+    const { writeContract, data: registerTxnHash } = useWriteContract();
+
+    console.log('registerTxnHash', registerTxnHash)
+    const register = async () => {
+
+        if (!name) {
+            return null;
+        }
+        // TODO bucket id
+
+        await writeContract({
+            address: L2_REGISTRAR_ADDRESS,
+            abi: L2_REGISTRAR_ABI,
+            functionName: 'register',
+            args: [name, ownerAddress, bucketName],
+        })
+        console.log('register results', registerTxnHash, [name, ownerAddress, bucketName])
+    }
+
+    const updateTxtRecords = async () => {
+        const labels = node.split('.');
+        const label = labelhash(labels.shift()!)
+
+        const results = await Promise.all(
+            Object.entries(distribution).map(([address, percentage]) => {
+                return writeContract({
+                    address: L2_REGISTRY_ADDRESS,
+                    abi: L2_REGISTRY_ABI,
+                    functionName: 'setText',
+                    args: [label, address, percentage],
+                })
+            }))
+        console.log('results', results)
+    }
 
     return {
-        createWalletContract,
-        isLoading,
-        data
+        register,
+        updateTxtRecords,
+        registerTxnHash,
+        // isLoading,
+        // data
     }
 }
 
@@ -84,6 +111,10 @@ const Page = () => {
 
     const account = useAccount();
 
+    const [ensResults, setEnsResults] = useState({
+
+    })
+
     const [akaveResults, setAkaveResults] = useState({
         success: false,
         ID: '',
@@ -93,11 +124,11 @@ const Page = () => {
     const [isCreated, setIsCreated] = useState(false);
 
     const distribution = {
-        ['0x9']: 100
+        ['0x962EFc5A602f655060ed83BB657Afb6cc4b5883F']: 100
     }
     // TODO distribution from retool
 
-    const results = useAddEnsTextRecords(account.address as unknown as Address, name, distribution);
+    const { register, updateTxtRecords, registerTxnHash } = useRegisterEns(account.address as unknown as Address, name, distribution);
 
     // TODO useCallback
     const createPool = async () => {
@@ -134,48 +165,66 @@ const Page = () => {
             </Button>
             <Button onClick={async () => {
 
-                console.log('config', results)
+                console.log('writeContract')
+                const results = await register();
+                if (results) {
+                    setEnsResults({
+                        registerTxnHash
+                    });
+                    console.log('registerResults', results);
+                }
+
+                await updateTxtRecords();
             }}>
                 Register Name
             </Button>
             {
-                isCreated && (
-                    <div>
-                        <li>
-                            <ul>
-                                {
-                                    akaveResults?.ID && (
-                                        <div className="flex gap-2">
-                                            ✅ Bucket Created.
-                                            <div>
-                                                {`${akaveResults?.ID}`}
-                                            </div>
-                                            <a href={`http://explorer.akave.ai/tx/${akaveResults?.transactionHash}`}>
-                                                View on Akave
-                                            </a>
+                <div className="w-1/2">
+                    <ul>
+
+                        {
+                            akaveResults?.ID && (
+                                <li>
+                                    <div className="flex gap-2">
+                                        ✅ Bucket Created.
+                                        <div>
+                                            {`${akaveResults?.ID}`}
                                         </div>
+                                        <a href={`http://explorer.akave.ai/tx/${akaveResults?.transactionHash}`}>
+                                            View on Akave
+                                        </a>
+                                    </div>
+                                </li>
 
-                                    )
-                                }
+                            )
+                        }
+                        {
+                            registerTxnHash && (
+                                <li>
+                                    ✅ ENS L2 <Badge>{name}.tuktuktothemoon.eth</Badge> Created
 
-                            </ul>
-                            <ul>
-                                ✅ ENS L2 <Badge>{name}.tuktuktothemoon.eth</Badge> Created
-                            </ul>
-                            <ul>
-                                ✅ Pool Created
-                            </ul>
-                            <ul>
-                                ✅ Smart Wallet Created
-                            </ul>
+                                    <a className="underline text-sm" href={`https://base-sepolia.blockscout.com/tx/${registerTxnHash}`}>
+                                        View on Blockscout
+                                    </a>
+                                </li>
+                            )
+                        }
 
-                        </li>
-                    </div>
-                )
+                        {/* <ul>
+                            ✅ Pool Created
+                        </ul>
+                        <ul>
+                            ✅ Smart Wallet Created
+                        </ul> */}
+
+                    </ul>
+                </div>
+
             }
 
 
-        </div>
+
+        </div >
     )
 }
 
